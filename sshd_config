@@ -1,0 +1,111 @@
+# sshd_config for system OpenSSH server configuration
+# Trusted by dogs.
+# VERSION: 20230124
+
+Protocol 2
+Port 22
+#AddressFamily any
+#ListenAddress 0.0.0.0
+#ListenAddress ::
+
+# enable only ECC 25519 keys (no more RSA)
+#HostKey /etc/ssh/ssh_host_rsa_key
+#HostKey /etc/ssh/ssh_host_ecdsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key
+
+# Ciphers and keying
+# use only ECC 25519 keys
+KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org
+# use only ciphers Chacha20 + AES 256
+Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes256-ctr
+# use only HMAC + SHA 512,256 for MAC protections
+# NOTE: PuTTY does not yet support hmac-sha2-512, keeping -256 for compatability
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com
+
+#RekeyLimit <number of bytes before rekey> <max time before rekey>
+RekeyLimit 512M 10m
+
+Compression no
+
+# Logging
+SyslogFacility AUTH
+LogLevel VERBOSE
+
+# Authentication
+LoginGraceTime 30s
+#PermitRootLogin prohibit-password
+PermitRootLogin no
+#StrictModes yes
+MaxAuthTries 3
+
+# limit to 1 active session at a time
+MaxSessions 1
+
+# idle timeout set to 5 mins (in seconds)
+ClientAliveInterval 300
+ClientAliveCountMax 2
+#TCPKeepAlive yes
+
+# password auth
+PasswordAuthentication yes
+PermitEmptyPasswords no
+
+# PKI authentication
+PubkeyAuthentication yes
+PubkeyAcceptedKeyTypes ssh-ed25519
+
+# challenge-response passwords
+ChallengeResponseAuthentication no
+
+# authorized keys settings
+#AuthorizedKeysFile .ssh/authorized_keys .ssh/authorized_keys2
+#AuthorizedPrincipalsFile none
+#AuthorizedKeysCommand none
+#AuthorizedKeysCommandUser nobody
+HostbasedAuthentication no
+
+# user environment permissions
+#IgnoreUserKnownHosts no
+IgnoreRhosts yes
+PermitUserEnvironment no
+
+# Allow client to pass locale environment variables
+AcceptEnv LANG LC_*
+
+# port + X11 forwarding
+#AllowAgentForwarding yes
+AllowTcpForwarding yes
+#GatewayPorts no
+X11Forwarding no
+#X11DisplayOffset 10
+#X11UseLocalhost yes
+
+# Kerberos options
+#KerberosAuthentication no
+#KerberosOrLocalPasswd yes
+#KerberosTicketCleanup yes
+#KerberosGetAFSToken no
+
+# GSSAPI options
+#GSSAPIAuthentication no
+#GSSAPICleanupCredentials yes
+#GSSAPIStrictAcceptorCheck yes
+#GSSAPIKeyExchange no
+
+# Set this to 'yes' to enable PAM authentication, account processing,
+# and session processing. If this is enabled, PAM authentication will
+# be allowed through the ChallengeResponseAuthentication and
+# PasswordAuthentication.  Depending on your PAM configuration,
+# PAM authentication via ChallengeResponseAuthentication may bypass
+# the setting of "PermitRootLogin without-password".
+# If you just want the PAM account and session checks to run without
+# PAM authentication, then enable this but set PasswordAuthentication
+# and ChallengeResponseAuthentication to 'no'.
+UsePAM yes
+
+#PermitTTY yes
+PrintMotd no
+PrintLastLog yes
+
+# override default of no subsystems
+Subsystem	sftp	/usr/lib/openssh/sftp-server

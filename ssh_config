@@ -1,0 +1,45 @@
+# ssh_config for system-wide SSH client configuration
+# Trusted by dogs.
+# VERSION: 20230124
+
+# Configuration data is parsed as follows:
+#  1. command line options
+#  2. user-specific file
+#  3. system-wide file
+# Any configuration value is only changed the first time it is set.
+# Thus, host-specific definitions should be at the beginning of the
+# configuration file, and defaults at the end.
+
+# Site-wide defaults for some commonly used options.  For a comprehensive
+# list of available options, their meanings and defaults, please see the
+# ssh_config(5) man page.
+
+Include /etc/ssh/ssh_config.d/*.conf
+
+# for all hosts (wildcard match)
+Host *
+  # permit only procol version 2
+  Protocol 2
+  
+  # (OpenSSH default) ask prior to adding host key to known_hosts file
+  StrictHostKeyChecking ask
+  
+  # use only ciphers Chacha20 + AES 256
+  # NOTE: check your frequently connected hosts for compatability,
+  #       but these should be WIDELY supported at this point.
+  Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes256-ctr
+  
+  # use only HMAC + SHA 512,256 for MAC protections
+  MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com
+  
+  # mitigate against birthday attacks, though these limites may be excessive
+  # RekeyLimit <number of bytes before rekey> <max time before rekey>
+  RekeyLimit 512M 10m
+  
+  # prohibit use of compression
+  Compression no
+  
+  # package "openssh-server_8.9p1-3" defaults aree below
+  SendEnv LANG LC_*
+  HashKnownHosts yes
+  GSSAPIAuthentication yes
