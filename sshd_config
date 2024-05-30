@@ -15,7 +15,7 @@ HostKey /etc/ssh/ssh_host_ed25519_key
 
 # Ciphers and keying
 # use only ECC 25519 keys
-KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org
+KexAlgorithms sntrup761x25519-sha512@openssh.com,curve25519-sha256,curve25519-sha256@libssh.org
 # use only ciphers Chacha20 + AES 256
 Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes256-ctr
 # use only HMAC + SHA 512,256 for MAC protections
