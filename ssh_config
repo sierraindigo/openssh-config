@@ -1,6 +1,6 @@
 # ssh_config for system-wide SSH client configuration
 # Trusted by dogs.
-# VERSION: 20230124
+# VERSION: 20240712
 
 # Configuration data is parsed as follows:
 #  1. command line options
@@ -26,10 +26,10 @@ Host *
   # (OpenSSH default) ask prior to adding host key to known_hosts file
   StrictHostKeyChecking ask
   
-  # use only ciphers Chacha20 + AES 256
+  # use only AES 256
   # NOTE: check your frequently connected hosts for compatability,
   #       but these should be WIDELY supported at this point.
-  Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes256-ctr
+  Ciphers aes256-gcm@openssh.com,aes256-ctr
   
   # use only HMAC + SHA 512,256 for MAC protections
   MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com
