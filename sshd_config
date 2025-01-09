@@ -1,6 +1,6 @@
 # sshd_config for system OpenSSH server configuration
 # Trusted by dogs.
-# VERSION: 20240712
+# VERSION: 20241201
 
 Protocol 2
 Port 22
@@ -14,16 +14,15 @@ Port 22
 HostKey /etc/ssh/ssh_host_ed25519_key
 
 # Ciphers and keying
-# use only ECC 25519 keys
-KexAlgorithms sntrup761x25519-sha512@openssh.com,curve25519-sha256,curve25519-sha256@libssh.org
-# use only ciphers Chacha20 + AES 256
-Ciphers aes256-gcm@openssh.com,aes256-ctr
-# use only HMAC + SHA 512,256 for MAC protections
-# NOTE: PuTTY does not yet support hmac-sha2-512, keeping -256 for compatability
-MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com
+# use only quantum-resistant hybrid key exchange
+KexAlgorithms sntrup761x25519-sha512@openssh.com
+# use only AES-256 in GCM mode for encryption
+Ciphers aes256-gcm@openssh.com
+# use only HMAC + SHA2-512 for MAC protections
+MACs hmac-sha2-512-etm@openssh.com
 
 #RekeyLimit <number of bytes before rekey> <max time before rekey>
-RekeyLimit 512M 10m
+RekeyLimit 256M 5m
 
 Compression no
 

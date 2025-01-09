@@ -1,6 +1,6 @@
 # ssh_config for system-wide SSH client configuration
 # Trusted by dogs.
-# VERSION: 20240712
+# VERSION: 20241201
 
 # Configuration data is parsed as follows:
 #  1. command line options
@@ -26,17 +26,17 @@ Host *
   # (OpenSSH default) ask prior to adding host key to known_hosts file
   StrictHostKeyChecking ask
   
-  # use only AES 256
+  # use only AES-256 in GCM mode for encryption
   # NOTE: check your frequently connected hosts for compatability,
   #       but these should be WIDELY supported at this point.
-  Ciphers aes256-gcm@openssh.com,aes256-ctr
+  Ciphers aes256-gcm@openssh.com
   
-  # use only HMAC + SHA 512,256 for MAC protections
-  MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com
+  # use only HMAC + SHA2-512 for MAC protections
+  MACs hmac-sha2-512-etm@openssh.com
   
-  # mitigate against birthday attacks, though these limites may be excessive
+  # mitigate against birthday attacks, though these limits may be excessive
   # RekeyLimit <number of bytes before rekey> <max time before rekey>
-  RekeyLimit 512M 10m
+  RekeyLimit 256M 5m
   
   # prohibit use of compression
   Compression no
